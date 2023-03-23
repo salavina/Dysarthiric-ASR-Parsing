@@ -1,5 +1,5 @@
 # custom library import
-from helper import ASRLoader, AudioParser, AudioAligner
+from utils import ASRLoader, AudioParser, AudioAligner
 
 PATH_TO_VOCAB_FILE = "./neurological_dataset_all_types_plus_TTS_set3/vocab.json"
 PATH_TO_WEIGHTS_FOLDER = "./neurological_dataset_all_types_plus_TTS_set3/checkpoint-4850/"
