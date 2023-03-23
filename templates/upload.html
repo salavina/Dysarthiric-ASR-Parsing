@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech Recognition in Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" />
+</head>
+<body>
+<div id="speechContainer">
+    <h1>Upload new File</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <br>
+        <input type="submit" id="submitButton" value="Analyze"/>
+    </form>
+    {% if text != "" %}
+    <div id="speechTranscriptContainer">
+        <h1>Analyze</h1>
+        <p id="speechText"><b>Audio Transcription:</b> {{ text }}</p>
+        <p id="counts"><b>Repetitions:</b> {{ counts_num_max }}</p>
+        <p id="totalDuration"><b>Total Duration:</b> {{ total_duration }}</p>
+        <p id="speechDuration"><b>Speech Duration:</b> {{ speech_duration }}</p>
+        <p id="pauseDuration"><b>Pause Duration:</b> {{ pause_duration }}</p>
+        <p id="speakingRate"><b>Speaking Rate:</b> {{ speaking_rate }}</p>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
