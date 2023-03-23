@@ -2,13 +2,13 @@ from flask import Flask, render_template
 from flask import request, redirect
 from helper import ASRLoader, AudioParser, AudioAligner
 import soundfile as sf
-import soundfile as sf
 
 app = Flask(__name__, template_folder='templates')
 
 PATH_TO_VOCAB_FILE = "./neurological_dataset_all_types_plus_TTS_set3/vocab.json"
 PATH_TO_WEIGHTS_FOLDER = "./neurological_dataset_all_types_plus_TTS_set3/checkpoint-4850/"
-
+def convert_float_to_str(x: float) -> str:
+    return f"{x:.2f}"
 @app.route("/", methods=["POST", "GET"])
 def index():
     transcription = ""
