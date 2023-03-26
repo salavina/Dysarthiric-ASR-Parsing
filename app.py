@@ -40,6 +40,7 @@ def index():
             x_1, x_2, fs1, fs2, ref_parse, wp, wp_s = AudioAligner(file.filename,
                                                                    output_json['counts_num_max']).audio_aligner()
             obj = AudioParser(fs1, fs2, ref_parse, path=wp)
+            output_json['counts_num_max'] = str(output_json['counts_num_max'])
             output_json['total_duration'] = "{:.2f}".format(obj.bbp_total_duration_generator_target())
             output_json['speech_duration'] = "{:.2f}".format(obj.bbp_speech_duration_generator_target_value())
             output_json['pause_duration'] = "{:.2f}".format(obj.bbp_pause_duration_generator_target())
