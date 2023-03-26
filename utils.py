@@ -90,9 +90,9 @@ class ASRLoader:
 
     # apply ML model to transcribe audio
     # you would just use the audio recorded in front-end as the input
-    def apply_ml(self, file_Sample, sr):
+    def apply_ml(self, SPEECH_FILE):
         model, processor, feature_extractor = self.load_model()
-        # file_Sample, sr = librosa.load(SPEECH_FILE)
+        file_Sample, sr = librosa.load(SPEECH_FILE)
         file_Sample = librosa.resample(file_Sample, orig_sr=sr, target_sr=16000)
         inputs = feature_extractor(file_Sample, sampling_rate=16000, return_tensors="pt")
         inputs.to('cuda')
@@ -321,10 +321,10 @@ class DTWImplementation:
 
 
 class AudioAligner:
-    def __init__(self, SPEECH_FILE, x2, fs2, counts_num_max, hop_size=512):
+    def __init__(self, SPEECH_FILE, counts_num_max, hop_size=512):
         self.SPEECH_FILE = SPEECH_FILE
-        self.x2 = x2
-        self.fs2 = fs2
+        # self.x2 = x2
+        # self.fs2 = fs2
         self.counts_num_max = counts_num_max
         self.hop_size = hop_size
 
@@ -368,7 +368,7 @@ class AudioAligner:
         ref_parse = reference_parse_dict[self.counts_num_max]
 
         x_1, fs1 = librosa.load(ref_audio)
-        # x_2, fs2 = librosa.load(self.SPEECH_FILE)
+        x_2, fs2 = librosa.load(self.SPEECH_FILE)
 
         ref_audio = reference_audio_dict[self.counts_num_max]
         ref_parse = reference_parse_dict[self.counts_num_max]
@@ -382,11 +382,11 @@ class AudioAligner:
         normalized_sound_target.export("target_audio.wav", format="wav")
 
         x_1, fs1 = librosa.load("ref_audio.wav")
-        self.x2, self.fs2 = librosa.load("target_audio.wav")
+        # self.x2, self.fs2 = librosa.load("target_audio.wav")
 
         # make and display a mel-scaled power (energy-squared) spectrogram
         S1 = librosa.feature.melspectrogram(y=x_1, sr=fs1, n_mels=128)
-        S2 = librosa.feature.melspectrogram(y=self.x2, sr=self.fs2, n_mels=128)
+        S2 = librosa.feature.melspectrogram(y=x_2, sr=fs2, n_mels=128)
 
         # Convert to log scale (dB). We'll use the peak power as reference.
         log_S1 = librosa.amplitude_to_db(S1)
@@ -400,6 +400,6 @@ class AudioAligner:
         wp = wp.T
         wp_s = np.asarray(wp) * self.hop_size / fs1
 
-        return x_1, self.x2, fs1, self.fs2, ref_parse, wp, wp_s
+        return x_1, x_2, fs1, fs2, ref_parse, wp, wp_s
 
 

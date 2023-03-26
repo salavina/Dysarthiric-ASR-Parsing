@@ -33,11 +33,11 @@ def index():
             return redirect(request.url)
 
         if file:
-            audio, sr = sf.read(file)
+            # audio, sr = sf.read(file)
             output_json['counts_num_max'], output_json['transcription'] = ASRLoader(PATH_TO_VOCAB_FILE,
                                                                                     PATH_TO_WEIGHTS_FOLDER).apply_ml(
-                audio, sr)
-            x_1, x_2, fs1, fs2, ref_parse, wp, wp_s = AudioAligner(file.filename, audio, sr,
+                file.filename)
+            x_1, x_2, fs1, fs2, ref_parse, wp, wp_s = AudioAligner(file.filename,
                                                                    output_json['counts_num_max']).audio_aligner()
             obj = AudioParser(fs1, fs2, ref_parse, path=wp)
             output_json['total_duration'] = "{:.2f}".format(obj.bbp_total_duration_generator_target())
